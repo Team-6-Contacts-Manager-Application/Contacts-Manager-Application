@@ -1,10 +1,10 @@
-public class Contacts {
+public class Contact {
 
     private String firstName;
     private String lastName;
     private String number;
 
-    public Contacts(String firstName, String lastName, String number) {
+    public Contact(String firstName, String lastName, String number) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.number = number;
@@ -13,15 +13,15 @@ public class Contacts {
 
     // accessors
     public String getFirstName() {
-        return firstName;
+        return this.firstName;
     }
 
     public String getLastName() {
-        return lastName;
+        return this.lastName;
     }
 
     public String getNumber() {
-        return number;
+        return this.number;
     }
 
     public void setFirstName(String firstName) {
