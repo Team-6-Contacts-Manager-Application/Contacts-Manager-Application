@@ -2,7 +2,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -13,8 +16,8 @@ public class Main {
     //contacts preloaded
     //call main menu/show it to user - DONE
     //take user input and execute
-        //view contacts - call and list contacts
-        //add new contact - DONE-ISH
+        //view contacts - call and list contacts - DONE
+        //add new contact - DONE
         // search by name
         //delete exiting contact
         //exit
@@ -57,8 +60,14 @@ public class Main {
     }
 
     //VIEW ALL CONTACTS
-    public static void viewAllContacts(){
+    public static void viewAllContacts() throws IOException{
+        Path contactPath = Paths.get("data","contact.txt");
+        List<String> contactList = Files.readAllLines(contactPath);
 
+        for (int i = 0; i < contactList.size(); i += 1) {
+            System.out.println(contactList.get(i));
+
+        }
     }
 
     //PRELOAD CONTACTS
@@ -101,8 +110,9 @@ public class Main {
         ArrayList<String> fileContents = new ArrayList<String>();
         fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "  |  " + contact.getNumber());
 
-        Files.write(dataFile, fileContents);
+            Files.write(dataFile,  fileContents, StandardOpenOption.APPEND);
 
+        //displayMenu();
     }
 
     //SEARCH CONTACTS BY NAME
@@ -113,12 +123,14 @@ public class Main {
     //DELETES CONTACT
     public static void deleteContact(){
 
+
     }
 
     //MAIN METHOD
     public static void main(String[] args) throws IOException {
         loadContact();
         displayMenu();
+
     }
 
 
