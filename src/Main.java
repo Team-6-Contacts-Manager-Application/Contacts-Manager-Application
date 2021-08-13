@@ -13,13 +13,12 @@ public class Main {
     //create data file if doesn't exit - DONE
 
     //application is opened - DONE
-    //contacts preloaded
     //call main menu/show it to user - DONE
     //take user input and execute
         //view contacts - call and list contacts - DONE
         //add new contact - DONE
-        // search by name
-        //delete exiting contact
+        //search by name - DONE
+        //delete exiting contact - DONE
         //exit
         //loop to keep calling displayMenu until hits exit - later
 
@@ -54,11 +53,6 @@ public class Main {
     }
 
 
-    //CREATE/CONFIRM DIRECTORY EXISTS
-    public static void confirmDirectory(){
-
-    }
-
     //VIEW ALL CONTACTS
     public static void viewAllContacts() throws IOException{
         Path contactPath = Paths.get("data","contact.txt");
@@ -70,8 +64,8 @@ public class Main {
         }
     }
 
-    //PRELOAD CONTACTS
-    public static void loadContact() throws IOException {
+    //CREATE/CONFIRM DIRECTORY EXISTS
+    public static void confirmDirectory() throws IOException {
         String directory = "data";
         String filename = "contact.txt";
 
@@ -116,19 +110,42 @@ public class Main {
     }
 
     //SEARCH CONTACTS BY NAME
-    public static void searchContacts(){
+    public static void searchContacts() throws IOException {
+        System.out.println("Enter the name of the contact you want search for: ");
+        Scanner sc = new Scanner(System.in);
+        String contactToSearch = sc.nextLine();
 
+        List<String> contacts = Files.readAllLines(Paths.get("data", "contact.txt"));
+        for (String contact  : contacts){
+            if(contact.contains(contactToSearch)){
+                System.out.println(contact);
+            }
+        }
     }
 
     //DELETES CONTACT
-    public static void deleteContact(){
+    public static void deleteContact() throws IOException {
 
+        System.out.println("Enter the first name of the contact you want to delete: ");
+        Scanner sc = new Scanner(System.in);
+        String contactToDelete = sc.nextLine();
+
+        List<String> contacts = Files.readAllLines(Paths.get("data", "contact.txt"));
+        List<String> newContacts = new ArrayList<>();
+
+        for (String contact  : contacts){
+            if(!contact.contains(contactToDelete)){
+                newContacts.add(contact);
+            }
+        }
+
+        Files.write(Paths.get("data", "contact.txt"), newContacts);
 
     }
 
     //MAIN METHOD
     public static void main(String[] args) throws IOException {
-        loadContact();
+        confirmDirectory();
         displayMenu();
 
     }
