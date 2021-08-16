@@ -22,16 +22,17 @@ public class Main {
         //exit - DONE
         //loop to keep calling displayMenu until hits exit - DONE
 
+    //DONE
+    //    Warn the user when she tries to enter a contact with an existing name.
+    //    There's already a contact named Jane Doe. Do you want to overwrite it? (Yes/No)
+    //    If the answer is No allow the user to enter the information again.
+
+    //TODO
 //    Format the phone numbers using dashes:
 //    instead of 8675309, your output should display 867-5309
 //    Allow formatting phone numbers with different lengths. For example, phone numbers can have 10 or 7 digits. You can be even more creative here and allow international phone numbers.
 
-
-//    Warn the user when she tries to enter a contact with an existing name.
-//    There's already a contact named Jane Doe. Do you want to overwrite it? (Yes/No)
-//    If the answer is No allow the user to enter the information again.
-
-
+    //TODO
 //    Format the output of the contacts, so that all of the columns have the same width.
 //            Name       | Phone number |
 //            ---------------------------
@@ -39,8 +40,6 @@ public class Main {
 //    Jane Doe   | 789-8902     |
 //    Sam Space  | 210-581-8123 |
 //    Hint: you can use format strings with the System.our.printf or String.format methods to ensure the columns have the same width.
-
-
 
     //SHOWS MENU TO USER
     public static void displayMenu() throws IOException {
@@ -123,12 +122,37 @@ public class Main {
         Path dataDirectory = Paths.get(directory);
         Path dataFile = Paths.get(directory, filename);
 
+        //checks if user already exists
         ArrayList<String> fileContents = new ArrayList<String>();
-        fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "  |  " + contact.getNumber());
+        List<String> contacts = Files.readAllLines(Paths.get("data", "contact.txt"));
+        boolean alreadyExists = false;
 
-            Files.write(dataFile,  fileContents, StandardOpenOption.APPEND);
+        for (String line: contacts){
 
+            //checks if user input already exists as a contact
+            if(line.contains(firstName + " " + lastName)){
+                System.out.println("User Already Exists. Do you want to continue?");
+                String continueAddUser = sc.nextLine();
 
+                //if user exists, checks if wants to continue
+                if(continueAddUser.contains("y") || continueAddUser.contains("Y")){
+                    System.out.println("User will be added!");
+                    fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "  |  " + contact.getNumber());
+                }
+                else{
+                    fileContents.add(line);
+                }
+                alreadyExists = true;
+            }
+            else{
+                fileContents.add(line);
+            }
+        }
+
+        if(!alreadyExists){
+            fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "  |  " + contact.getNumber());
+        }
+        Files.write(Paths.get("data", "contact.txt"), fileContents);
         displayMenu();
     }
 
