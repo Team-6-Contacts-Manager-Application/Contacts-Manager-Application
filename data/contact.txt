@@ -5,3 +5,5 @@ doc martin  |  123456789
 john doe  |  123
 doc  rob  |  123
 jane doe  |  12345
+Sam  Moore  |  123455678
+Ry Sutton  |  09876543

@@ -77,11 +77,20 @@ public class Main {
     public static void viewAllContacts() throws IOException{
         Path contactPath = Paths.get("data","contact.txt");
         List<String> contactList = Files.readAllLines(contactPath);
+        int longestString = 0;
 
-        for (int i = 0; i < contactList.size(); i += 1) {
-            System.out.println(contactList.get(i));
+        for(int i = 0; i < contactList.size(); i +=1) {
 
         }
+
+
+        for (int i = 0; i < contactList.size(); i += 1) {
+//        System.out.printf("%-"++"s" + "| Phone number |\n", name);
+//        System.out.println("----------------------------");
+
+            System.out.println(contactList.get(i));
+        }
+
         displayMenu();
     }
 
@@ -137,7 +146,7 @@ public class Main {
                 //if user exists, checks if wants to continue
                 if(continueAddUser.contains("y") || continueAddUser.contains("Y")){
                     System.out.println("User will be added!");
-                    fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "  |  " + contact.getNumber());
+                    fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "|" + contact.getNumber());
                 }
                 else{
                     fileContents.add(line);
@@ -150,7 +159,7 @@ public class Main {
         }
 
         if(!alreadyExists){
-            fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "  |  " + contact.getNumber());
+            fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "|" + contact.getNumber());
         }
         Files.write(Paths.get("data", "contact.txt"), fileContents);
         displayMenu();
