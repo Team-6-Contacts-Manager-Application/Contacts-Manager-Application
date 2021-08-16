@@ -27,12 +27,12 @@ public class Main {
     //    There's already a contact named Jane Doe. Do you want to overwrite it? (Yes/No)
     //    If the answer is No allow the user to enter the information again.
 
-    //TODO
+    // - DONE
 //    Format the phone numbers using dashes:
 //    instead of 8675309, your output should display 867-5309
 //    Allow formatting phone numbers with different lengths. For example, phone numbers can have 10 or 7 digits. You can be even more creative here and allow international phone numbers.
 
-    //TODO - make dynamic?
+    // - DONE
 //    Format the output of the contacts, so that all of the columns have the same width.
 //            Name       | Phone number |
 //            ---------------------------
@@ -137,6 +137,16 @@ public class Main {
         List<String> contacts = Files.readAllLines(Paths.get("data", "contact.txt"));
         boolean alreadyExists = false;
 
+        String contactNumber = contact.getNumber();
+
+        if(contactNumber.length() == 7) {
+            contactNumber = contactNumber.substring(0, 3) + "-" + contactNumber.substring(3);
+        }
+
+        if(contactNumber.length() == 10) {
+            contactNumber = contactNumber.substring(0, 3) + "-" + contactNumber.substring(3,6) + "-" + contactNumber.substring(6);
+        }
+
         for (String line: contacts){
 
             //checks if user input already exists as a contact
@@ -147,7 +157,7 @@ public class Main {
                 //if user exists, checks if wants to continue
                 if(continueAddUser.contains("y") || continueAddUser.contains("Y")){
                     System.out.println("User will be added!");
-                    fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "|" + contact.getNumber());
+                    fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "|" + contactNumber);
                 }
                 else{
                     fileContents.add(line);
@@ -160,11 +170,13 @@ public class Main {
         }
 
         if(!alreadyExists){
-            fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "|" + contact.getNumber());
+            fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "|" + contactNumber);
         }
         Files.write(Paths.get("data", "contact.txt"), fileContents);
+
         displayMenu();
     }
+
 
     //SEARCH CONTACTS BY NAME
     public static void searchContacts() throws IOException {

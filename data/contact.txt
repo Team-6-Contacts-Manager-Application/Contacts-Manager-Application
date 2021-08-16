@@ -1,10 +1,12 @@
-Nic Gutierrez|123456789
-Doc Rob|987654321
-Dorian Wallace|12341234345
-doc martin|123456789
-john doe|123
-doc  rob|123
-jane doe|12345
-Sam  Moore|123455678
-Ry Sutton|09876543
-jubilee galbraith|123456789
+Nic Gutierrez| 123-456-7890
+Doc Rob|987-654-3214
+Dorian Wallace|123-412-3445
+doc martin|127-834-5678
+john doe|046-1235
+doc  rob|739-728-5123
+jane doe|123-458-9489
+Sam  Moore|123-455-6780
+Ry Sutton|098-765-4354
+jubilee galbraith|123-4567
+Trevor Mullis|123-4567
+Douglas Hirsch|123-456-7890
