@@ -32,7 +32,7 @@ public class Main {
 //    instead of 8675309, your output should display 867-5309
 //    Allow formatting phone numbers with different lengths. For example, phone numbers can have 10 or 7 digits. You can be even more creative here and allow international phone numbers.
 
-    //TODO
+    //TODO - make dynamic?
 //    Format the output of the contacts, so that all of the columns have the same width.
 //            Name       | Phone number |
 //            ---------------------------
@@ -77,20 +77,21 @@ public class Main {
     public static void viewAllContacts() throws IOException{
         Path contactPath = Paths.get("data","contact.txt");
         List<String> contactList = Files.readAllLines(contactPath);
-        int longestString = 0;
 
-        for(int i = 0; i < contactList.size(); i +=1) {
-
-        }
-
+        String name = "Name";
+        String phoneNumber = "Phone Number";
+                System.out.printf("%-20s" + "| %-12s|\n", name, phoneNumber);
+        System.out.println("----------------------------");
 
         for (int i = 0; i < contactList.size(); i += 1) {
-//        System.out.printf("%-"++"s" + "| Phone number |\n", name);
-//        System.out.println("----------------------------");
+            String fullContactInfo = contactList.get(i);
+            String [] arrOfContacts = fullContactInfo.split("\\|", 2);
 
-            System.out.println(contactList.get(i));
+            name = arrOfContacts[0];
+            phoneNumber = arrOfContacts[1];
+
+            System.out.printf(("%-20s" + "| %-12s|\n"), name, phoneNumber);
         }
-
         displayMenu();
     }
 
