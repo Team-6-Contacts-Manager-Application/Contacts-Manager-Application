@@ -19,8 +19,28 @@ public class Main {
         //add new contact - DONE
         //search by name - DONE
         //delete exiting contact - DONE
-        //exit
-        //loop to keep calling displayMenu until hits exit - later
+        //exit - DONE
+        //loop to keep calling displayMenu until hits exit - DONE
+
+//    Format the phone numbers using dashes:
+//    instead of 8675309, your output should display 867-5309
+//    Allow formatting phone numbers with different lengths. For example, phone numbers can have 10 or 7 digits. You can be even more creative here and allow international phone numbers.
+
+
+//    Warn the user when she tries to enter a contact with an existing name.
+//    There's already a contact named Jane Doe. Do you want to overwrite it? (Yes/No)
+//    If the answer is No allow the user to enter the information again.
+
+
+//    Format the output of the contacts, so that all of the columns have the same width.
+//            Name       | Phone number |
+//            ---------------------------
+//    Jack Blank | 210-567-8923 |
+//    Jane Doe   | 789-8902     |
+//    Sam Space  | 210-581-8123 |
+//    Hint: you can use format strings with the System.our.printf or String.format methods to ensure the columns have the same width.
+
+
 
     //SHOWS MENU TO USER
     public static void displayMenu() throws IOException {
@@ -48,6 +68,7 @@ public class Main {
                     deleteContact();
                     break;
                 case 5:
+                    System.out.println("Closing application now. Goodbye!");
                     break;
             }
     }
@@ -62,6 +83,7 @@ public class Main {
             System.out.println(contactList.get(i));
 
         }
+        displayMenu();
     }
 
     //CREATE/CONFIRM DIRECTORY EXISTS
@@ -106,7 +128,8 @@ public class Main {
 
             Files.write(dataFile,  fileContents, StandardOpenOption.APPEND);
 
-        //displayMenu();
+
+        displayMenu();
     }
 
     //SEARCH CONTACTS BY NAME
@@ -115,12 +138,18 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         String contactToSearch = sc.nextLine();
 
+        boolean inDatabase = false;
         List<String> contacts = Files.readAllLines(Paths.get("data", "contact.txt"));
         for (String contact  : contacts){
-            if(contact.contains(contactToSearch)){
+            if((contact.toLowerCase()).contains(contactToSearch.toLowerCase())){
                 System.out.println(contact);
+                inDatabase = true;
             }
         }
+        if (!inDatabase) {
+            System.out.println("User could not be found in Contacts.");
+        }
+        displayMenu();
     }
 
     //DELETES CONTACT
@@ -140,7 +169,7 @@ public class Main {
         }
 
         Files.write(Paths.get("data", "contact.txt"), newContacts);
-
+        displayMenu();
     }
 
     //MAIN METHOD
