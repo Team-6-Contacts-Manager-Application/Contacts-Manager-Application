@@ -1,4 +1,4 @@
-Nic Gutierrez| 123-456-7890
+Nic Gutierrez|123-456-7890
 Doc Rob|987-654-3214
 Dorian Wallace|123-412-3445
 doc martin|127-834-5678
@@ -10,3 +10,4 @@ Ry Sutton|098-765-4354
 jubilee galbraith|123-4567
 Trevor Mullis|123-4567
 Douglas Hirsch|123-456-7890
+Carly Rae Jepsen|123-456-7890

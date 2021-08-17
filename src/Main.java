@@ -9,49 +9,16 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Main {
-    //create data directory - DONE
-    //create data file if doesn't exit - DONE
-
-    //application is opened - DONE
-    //call main menu/show it to user - DONE
-    //take user input and execute
-        //view contacts - call and list contacts - DONE
-        //add new contact - DONE
-        //search by name - DONE
-        //delete exiting contact - DONE
-        //exit - DONE
-        //loop to keep calling displayMenu until hits exit - DONE
-
-    //DONE
-    //    Warn the user when she tries to enter a contact with an existing name.
-    //    There's already a contact named Jane Doe. Do you want to overwrite it? (Yes/No)
-    //    If the answer is No allow the user to enter the information again.
-
-    // - DONE
-//    Format the phone numbers using dashes:
-//    instead of 8675309, your output should display 867-5309
-//    Allow formatting phone numbers with different lengths. For example, phone numbers can have 10 or 7 digits. You can be even more creative here and allow international phone numbers.
-
-    // - DONE
-//    Format the output of the contacts, so that all of the columns have the same width.
-//            Name       | Phone number |
-//            ---------------------------
-//    Jack Blank | 210-567-8923 |
-//    Jane Doe   | 789-8902     |
-//    Sam Space  | 210-581-8123 |
-//    Hint: you can use format strings with the System.our.printf or String.format methods to ensure the columns have the same width.
 
     //SHOWS MENU TO USER
     public static void displayMenu() throws IOException {
-        System.out.println("1. View contacts.\n" +
+        System.out.println("\n1. View contacts.\n" +
                 "2. Add a new contact.\n" +
                 "3. Search a contact by name.\n" +
                 "4. Delete an existing contact.\n" +
-                "5. Exit.\n" +
-                "Enter an option (1, 2, 3, 4 or 5):");
-        Scanner sc = new Scanner(System.in);
-        int userChoice = sc.nextInt();
-        System.out.println(userChoice);
+                "5. Exit.\n");
+
+        int userChoice = getInt(1, 5);
 
             switch(userChoice) {
                 case 1:
@@ -72,25 +39,63 @@ public class Main {
             }
     }
 
+    //get user int choice, checks if int & if is a valid choice
+    public static int getInt(int min, int max){
+        System.out.println("Enter an option (1, 2, 3, 4 or 5):");
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        try{
+            choice = Integer.valueOf(sc.nextLine());
+        } catch (NumberFormatException e){
+            System.out.println("Error: Input is not an integer!");
+            return getInt(min, max);
+        }
+        if(choice >= min && choice <= max){
+            return choice;
+        }
+        else{
+            System.out.println("Error: Choice is not Recognized!");
+            return getInt(min, max);
+        }
+    }
+
 
     //VIEW ALL CONTACTS
     public static void viewAllContacts() throws IOException{
         Path contactPath = Paths.get("data","contact.txt");
         List<String> contactList = Files.readAllLines(contactPath);
 
+        //gets the longest name/string and uses that to determine spacing
+        int longest = 0;
+        for(int i = 0; i < contactList.size(); i++){
+            String fullContactInfo = contactList.get(i);
+            String [] arrOfContacts = fullContactInfo.split("\\|", 2);
+
+            String fullName = arrOfContacts[0];
+            if(fullName.length() >= longest){
+                longest = fullName.length();
+            }
+        }
+
         String name = "Name";
         String phoneNumber = "Phone Number";
-                System.out.printf("%-20s" + "| %-12s|\n", name, phoneNumber);
-        System.out.println("----------------------------");
+        System.out.printf(("%-" + (longest + 1) + "s| %-12s |\n"), name, phoneNumber);
 
-        for (int i = 0; i < contactList.size(); i += 1) {
+        for(int i = 0; i <= longest + 16; i++){
+            System.out.print("-");
+        }
+        System.out.print("\n");
+
+        //prints all contacts with formatting
+        for (int i = 0; i < contactList.size(); i ++) {
             String fullContactInfo = contactList.get(i);
             String [] arrOfContacts = fullContactInfo.split("\\|", 2);
 
             name = arrOfContacts[0];
             phoneNumber = arrOfContacts[1];
 
-            System.out.printf(("%-20s" + "| %-12s|\n"), name, phoneNumber);
+            System.out.printf(("%-" + (longest + 1) + "s| %-12s |\n"), name, phoneNumber);
         }
         displayMenu();
     }
@@ -112,52 +117,79 @@ public class Main {
         }
     }
 
+    //Gets String
+    public static String getString(){
+        Scanner sc = new Scanner(System.in);
+        return sc.nextLine();
+    }
+
+    //gets phone number, checks if is valid number, checks length & formats with dashes
+    public static String getPhoneNumber() {
+        System.out.println("Enter Phone Number: ");
+        Scanner sc = new Scanner(System.in);
+        int number = 0;
+        try {
+            number = Integer.valueOf(sc.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Error: Phone Number must contain only numbers!");
+            getPhoneNumber();
+        }
+        
+        String phoneNumber = Integer.toString(number);
+
+        if(phoneNumber.length() == 7) {
+            phoneNumber = phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(3);
+        }
+
+        else if(phoneNumber.length() == 10) {
+            phoneNumber = phoneNumber.substring(0, 3) + "-" + phoneNumber.substring(3,6) + "-" + phoneNumber.substring(6);
+        }
+        else{
+            System.out.println("Error: Phone Numbers must be 7 or 10 digits long!");
+            getPhoneNumber();
+        }
+        return phoneNumber;
+    }
+
+    //checks yes or no answer
+    public static boolean yesNo(){
+        Scanner sc = new Scanner(System.in);
+        String answer = sc.nextLine();
+        if(answer.contains("y") || answer.contains("Y")){
+            return true;
+        }
+        else if(!answer.contains("y") && !answer.contains("Y") && !answer.contains("n") && answer.contains("N")){
+            System.out.println("Error: Choice not recognized. Please enter y or n!");
+            yesNo();
+        }
+      return false;
+    }
+
     //ADD A NEW CONTACT
     public static void addNewContact() throws IOException {
         //CREATES NEW CONTACT OBJECT
-        Scanner sc = new Scanner(System.in);
         System.out.println("Enter First Name: ");
-        String firstName = sc.nextLine();
+        String firstName = getString();
         System.out.println("Enter last Name: ");
-        String lastName = sc.nextLine();
-        System.out.println("Enter Phone Number: ");
-        String phoneNumber = sc.nextLine();
+        String lastName = getString();
+        String phoneNumber = getPhoneNumber();
 
         Contact contact = new Contact(firstName, lastName, phoneNumber);
-
-        //ADD CONTACT OBJECT TO CONTACT.TEXT
-        String directory = "data";
-        String filename = "contact.txt";
-
-        Path dataDirectory = Paths.get(directory);
-        Path dataFile = Paths.get(directory, filename);
 
         //checks if user already exists
         ArrayList<String> fileContents = new ArrayList<String>();
         List<String> contacts = Files.readAllLines(Paths.get("data", "contact.txt"));
         boolean alreadyExists = false;
 
-        String contactNumber = contact.getNumber();
-
-        if(contactNumber.length() == 7) {
-            contactNumber = contactNumber.substring(0, 3) + "-" + contactNumber.substring(3);
-        }
-
-        if(contactNumber.length() == 10) {
-            contactNumber = contactNumber.substring(0, 3) + "-" + contactNumber.substring(3,6) + "-" + contactNumber.substring(6);
-        }
-
         for (String line: contacts){
-
             //checks if user input already exists as a contact
             if(line.contains(firstName + " " + lastName)){
-                System.out.println("User Already Exists. Do you want to continue?");
-                String continueAddUser = sc.nextLine();
+                System.out.println("User Already Exists. Do you want to override & continue? (y/n)");
 
                 //if user exists, checks if wants to continue
-                if(continueAddUser.contains("y") || continueAddUser.contains("Y")){
+                if(yesNo()){
                     System.out.println("User will be added!");
-                    fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "|" + contactNumber);
+                    fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "|" + contact.getNumber());
                 }
                 else{
                     fileContents.add(line);
@@ -170,7 +202,7 @@ public class Main {
         }
 
         if(!alreadyExists){
-            fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "|" + contactNumber);
+            fileContents.add(contact.getFirstName() + " " + contact.getLastName() + "|" + contact.getNumber());
         }
         Files.write(Paths.get("data", "contact.txt"), fileContents);
 
@@ -181,8 +213,7 @@ public class Main {
     //SEARCH CONTACTS BY NAME
     public static void searchContacts() throws IOException {
         System.out.println("Enter the name of the contact you want search for: ");
-        Scanner sc = new Scanner(System.in);
-        String contactToSearch = sc.nextLine();
+        String contactToSearch = getString();
 
         boolean inDatabase = false;
         List<String> contacts = Files.readAllLines(Paths.get("data", "contact.txt"));
@@ -200,21 +231,22 @@ public class Main {
 
     //DELETES CONTACT
     public static void deleteContact() throws IOException {
-
         System.out.println("Enter the first name of the contact you want to delete: ");
-        Scanner sc = new Scanner(System.in);
-        String contactToDelete = sc.nextLine();
+        String contactToDelete = getString();
 
-        List<String> contacts = Files.readAllLines(Paths.get("data", "contact.txt"));
-        List<String> newContacts = new ArrayList<>();
+        System.out.println("Are you sure you want to delete " + contactToDelete + " ?");
+        if(yesNo()){
+            List<String> contacts = Files.readAllLines(Paths.get("data", "contact.txt"));
+            List<String> newContacts = new ArrayList<>();
 
-        for (String contact  : contacts){
-            if(!contact.contains(contactToDelete)){
-                newContacts.add(contact);
+            for (String contact  : contacts){
+                if(!contact.contains(contactToDelete)){
+                    newContacts.add(contact);
+                }
             }
-        }
 
-        Files.write(Paths.get("data", "contact.txt"), newContacts);
+            Files.write(Paths.get("data", "contact.txt"), newContacts);
+        }
         displayMenu();
     }
 
@@ -222,8 +254,5 @@ public class Main {
     public static void main(String[] args) throws IOException {
         confirmDirectory();
         displayMenu();
-
     }
-
-
 }
